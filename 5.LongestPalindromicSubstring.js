@@ -3,40 +3,32 @@
  * @return {string}
  */
 // give string and index to compare left and right
-
-
-var longestPalindrome = function(s) {
-    var res =""
-    var resLen= 0;
-    for(let i=0;i<s.length;i++){
-        let end =i;
-        let start =i;
-
-        while(start>=0 && end < s.length && s[start]==s[end]){
-            if(end-start+1 >resLen ){
-                res = s.slice(start, end+1);
-                resLen = end-start+1;
-            } 
-            start--;
-            end++;
-            console.log(s[start],s[end],'Start End');
-
-        }
-        end=i;
-        start =i+1
-        while(start>=0 && end < s.length && s[start]==s[end]){
-            if(end-start+1 >resLen ){
-                res = s.slice(start, end+1);
-                resLen = end-start+1;
-            } 
-            start--;
-            end++;
-        }
+function getPalindrome(left, right, s){
+    // s -> cbbd 
+    // slice (start, for 0 up to) 
+    let temp =[0,1]
+    while(left >= 0 && right < s.length && s[left] == s[right]){
+        left--;
+        right++;
     }
-    return res;
-    // return s.split();
+    return [left+1, right];
+}
+var longestPalindrome = function(s) {
+    // 
+    let max = [0,1]
+    let currMax =[0,1]
+    s =s.toString();
+    //expland left and right from each char 
+    for(let i=0 ; i< s.length; i++){
+        even =  getPalindrome(i-1, i, s); 
+        odd =  getPalindrome(i-1, i+1, s); 
+        currMax = (even[1]-even[0] > odd[1]-odd[0])? even : odd
+        max =( currMax[1]-currMax[0] > max[1]-max[0])? currMax : max ;  
+    }
+    return s.slice(max[0],max[1])
 };
 
+
 var s ="babad"
-s ="cbbd"
-longestPalindrome(s);
+s =121
+console.log(longestPalindrome(s))
